@@ -12,12 +12,16 @@ class Grafo {
         matrizAdyacencia = new int[cantidadVertices][cantidadVertices];
         for (int i = 0; i < cantidadVertices; i++) {
             for (int j = 0; j < cantidadVertices; j++) {
-                matrizAdyacencia[i][j] = 0;
+                if (i == j) {
+                    matrizAdyacencia[i][j] = 0;
+                } else {
+                    matrizAdyacencia[i][j] = Integer.MAX_VALUE;
+                }
             }
         }
     }
 
-    public Vertice buscarCentroMasCercano(Grafo g,int origen) {
+    public Vertice buscarCentroMasCercano(Grafo g, int origen) {
         CaminoMinimo caminoMinimo = new CaminoMinimo(g, origen);
         caminoMinimo.Dijkstra(g, origen);
         int minDistancia = Integer.MAX_VALUE;
@@ -46,13 +50,13 @@ class Grafo {
             }
             try {
                 System.out.println("Ingresa el vértice origen:");
-                origen = entrada.nextInt();
+                origen = entrada.nextInt() - 1;
                 System.out.println("Ingresa el vértice destino:");
-                destino = entrada.nextInt();
-                if (matrizAdyacencia[origen - 1][destino - 1] == 0) {
+                destino = entrada.nextInt() - 1;
+                if (matrizAdyacencia[origen][destino] == Integer.MAX_VALUE) {
                     System.out.println("Ingresa la distancia entre los centros:");
                     peso = entrada.nextInt();
-                    matrizAdyacencia[origen - 1][destino - 1] = peso;
+                    matrizAdyacencia[origen][destino] = peso;
                     System.out.println("Agregar más aristas 1) SI \t2) NO");
                     opcion = entrada.nextInt();
                 } else {
@@ -72,7 +76,7 @@ class Grafo {
         for (int i = 0; i < matrizAdyacencia.length; i++) {
             for (int j = 0; j < matrizAdyacencia[i].length; j++) {
                 if (matrizAdyacencia[i][j] == Integer.MAX_VALUE) {
-                    System.out.print("∞\t");
+                    System.out.print("0\t");
                 } else {
                     System.out.print(matrizAdyacencia[i][j] + "\t");
                 }

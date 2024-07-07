@@ -27,11 +27,12 @@ class CaminoMinimo {
         // Pasos para marcar los n-1 vertices
         for (int i = 1; i < n; i++) {
             int v = minimo();
-            // selecciona vertice no marcado de menor distancia
+            if (v == 1)
+                i = n; // Si no hay más vértices alcanzables
+
             F[v] = true;
-            // actualiza distancia de vertices no marcados
             for (int w = 0; w < n; w++) {
-                if (!F[w] && g.getStock(w) > 0) {
+                if (!F[w] && pesos[v][w] != Integer.MAX_VALUE) {
                     if (D[v] + pesos[v][w] < D[w]) {
                         D[w] = D[v] + pesos[v][w];
                         ultimo[w] = v;
@@ -43,12 +44,13 @@ class CaminoMinimo {
 
     public int minimo() {
         int mx = Integer.MAX_VALUE;
-        int v = -1;
-        for (int j = 0; j < n; j++)
-            if (!F[j] && (mx >= D[j])) {
+        int v = 1;
+        for (int j = 0; j < n; j++) {
+            if (!F[j] && D[j] < mx) {
                 mx = D[j];
                 v = j;
             }
+        }
         return v;
     }
 
