@@ -52,6 +52,7 @@ class Grafo {
     public void agregarAristas() {
         Scanner entrada = new Scanner(System.in);
         int origen, destino, peso, opcion = 0;
+        boolean valido = false;
         do {
             for (int i = 0; i < listaVertices.length; i++) {
                 System.out.println((i + 1) + ") " + listaVertices[i].getNombre());
@@ -73,7 +74,20 @@ class Grafo {
                     }
                     matrizAdyacencia[origen][destino] = peso;
                     System.out.println("Agregar más aristas 1) SI \t2) NO");
-                    opcion = entrada.nextInt();
+                    while (!valido) {
+                        try {
+                            opcion = entrada.nextInt();
+                            if (opcion == 1 || opcion == 2) {
+                                valido = true;
+                            } else {
+                                System.out.println("Ingrese una opción válida (1 o 2)");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Ingrese una opción válida (1 o 2)");
+                            entrada.next();
+                        }
+                    }
+                    valido = false;
                 } else {
                     System.out.println("Ya existe una arista entre estos vértices.");
                     opcion = 1;
