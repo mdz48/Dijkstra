@@ -32,7 +32,11 @@ public class Main {
                     entrada.next();
                 }
             }
-            grafo.agregarVertice(name, i, stock);
+//            grafo.agregarVertice(name, i, stock);
+            if (!grafo.agregarVertice(name, i, stock)){
+                System.out.println("Centro repetido");
+                i--;
+            }
         }
         grafo.agregarAristas();
         grafo.imprimir();

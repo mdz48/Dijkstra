@@ -11,6 +11,7 @@ class Grafo {
         this.cantidadVertices = cantidadVertices;
         matrizAdyacencia = new int[cantidadVertices][cantidadVertices];
         for (int i = 0; i < cantidadVertices; i++) {
+            listaVertices[i] = new Vertice("", 0);
             for (int j = 0; j < cantidadVertices; j++) {
                 if (i == j) {
                     matrizAdyacencia[i][j] = 0;
@@ -35,10 +36,17 @@ class Grafo {
         return centroCercano;
     }
 
-    public void agregarVertice(String etiqueta, int numero, int stock) {
+    public boolean agregarVertice(String etiqueta, int numero, int stock) {
+        for (int i = 0; i < listaVertices.length; i++) {
+            if (etiqueta.equals(listaVertices[i].getNombre())) {
+                return false;
+            }
+        }
         Vertice nuevoVertice = new Vertice(etiqueta, stock);
         nuevoVertice.asigVert(numero);
         listaVertices[numero] = nuevoVertice;
+        return true;
+
     }
 
     public void agregarAristas() {
@@ -49,13 +57,20 @@ class Grafo {
                 System.out.println((i + 1) + ") " + listaVertices[i].getNombre());
             }
             try {
-                System.out.println("Ingresa el vértice origen:");
+                System.out.println("Ingresa el centro de origen:");
                 origen = entrada.nextInt() - 1;
-                System.out.println("Ingresa el vértice destino:");
+                System.out.println("Ingresa el centro de destino:");
                 destino = entrada.nextInt() - 1;
-                if (matrizAdyacencia[origen][destino] == Integer.MAX_VALUE) {
+                if (origen == destino){
+                    System.out.println("Porfavor, escoja otro centro de distribución");
+                    opcion = 1;
+                } else if (matrizAdyacencia[origen][destino] == Integer.MAX_VALUE ) {
                     System.out.println("Ingresa la distancia entre los centros:");
                     peso = entrada.nextInt();
+                    while (peso < 1) {
+                        System.out.println("Ingrese una distancia positiva");
+                        peso = entrada.nextInt();
+                    }
                     matrizAdyacencia[origen][destino] = peso;
                     System.out.println("Agregar más aristas 1) SI \t2) NO");
                     opcion = entrada.nextInt();
@@ -63,9 +78,9 @@ class Grafo {
                     System.out.println("Ya existe una arista entre estos vértices.");
                     opcion = 1;
                 }
-            } catch (InputMismatchException e) {
+            } catch (Exception e) {
                 System.out.println("Intenta de nuevo:");
-                entrada.next();  // Clear invalid input
+                entrada.next();
                 opcion = 1;
             }
         } while (opcion == 1);
